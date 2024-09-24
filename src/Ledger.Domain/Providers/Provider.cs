@@ -8,10 +8,6 @@ namespace Ledger.Domain.Providers
     {
         public string Name { get; set; }
 
-        public ICollection<Ticket> Tickets { get; } = [];
-
-        public double TotalSpent { get => Tickets.Sum(t => t.Value); }
-
         private Provider()
         {
             // For EF Only.

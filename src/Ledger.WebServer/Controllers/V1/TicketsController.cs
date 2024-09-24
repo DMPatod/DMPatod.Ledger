@@ -21,16 +21,27 @@ namespace Ledger.WebServer.Controllers.V1
         {
             var command = new TicketAddCommand(
                 request.Provider,
-                DateOnly.FromDateTime(DateTime.Now),
+                DateOnly.FromDateTime(DateTime.Parse(request.Date)),
                 request.Orders.Select(o => new OrderItem(
                     o.Product,
                     o.Value,
-                    o.Amount,
-                    o.MesureUnit)),
+                    o.Amount)),
                 request.Installments,
                 request.Currency,
                 request.Direction);
             var result = await _messageHandler.SendAsync(command, CancellationToken.None);
+            if (result.IsFailed)
+            {
+                throw new Exception();
+            }
+            return Ok(result.ValueOrDefault);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var query = new TicketFindQuery();
+            var result = await _messageHandler.SendAsync(query, CancellationToken.None);
             if (result.IsFailed)
             {
                 throw new Exception();

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentResults" Version="3.16.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Ledger.Domain\Ledger.Domain.csproj" />
   </ItemGroup>
 

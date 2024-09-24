@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ledger.Infrastructure.DataPersistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class InitialConfig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,15 +62,14 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false),
-                    Amount = table.Column<double>(type: "float", nullable: false),
-                    TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Amount = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => new { x.ProductId, x.TicketId, x.Value, x.Amount });
                     table.ForeignKey(
                         name: "FK_Orders_Products_ProductId",
                         column: x => x.ProductId,
@@ -84,11 +83,6 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_ProductId",
-                table: "Orders",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_TicketId",

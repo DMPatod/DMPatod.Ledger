@@ -18,9 +18,9 @@ namespace Ledger.Infrastructure.DataPersistence
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            service.AddScoped<ITicketRepository, TicketRepository>();
-            service.AddScoped<IProductRepository, ProductRepository>();
-            service.AddScoped<IProviderRepository, ProviderRepository>();
+            service.AddTransient<ITicketRepository, TicketRepository>();
+            service.AddTransient<IProductRepository, ProductRepository>();
+            service.AddTransient<IProviderRepository, ProviderRepository>();
 
             return service;
         }

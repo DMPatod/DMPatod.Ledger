@@ -1,9 +1,9 @@
 ﻿using DDD.Core.Handlers;
 using DDD.Core.Messages;
 using FluentResults;
+using Ledger.Domain.Products.Enums;
 using Ledger.Domain.Tickets;
 using Ledger.Domain.Tickets.Entity;
-using Ledger.Domain.Tickets.Enums;
 
 namespace Ledger.Application.Orders
 {

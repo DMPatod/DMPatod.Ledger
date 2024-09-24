@@ -1,7 +1,6 @@
 ﻿using DDD.Core.DomainObjects;
+using Ledger.Domain.Products.Enums;
 using Ledger.Domain.Products.ValueObjects;
-using Ledger.Domain.Tickets.Entity;
-using Ledger.Domain.Tickets.Enums;
 
 namespace Ledger.Domain.Products
 {
@@ -9,11 +8,7 @@ namespace Ledger.Domain.Products
     {
         public string Name { get; set; }
 
-        public ICollection<Order> Orders { get; } = [];
-
         public MesureUnit MesureUnit { get; set; }
-
-        public double AveragePrice { get => Orders.Average(o => o.Value); }
 
         private Product()
         {

@@ -2,8 +2,8 @@
 using DDD.Core.Messages;
 using FluentResults;
 using Ledger.Domain.Products;
+using Ledger.Domain.Products.Enums;
 using Ledger.Domain.Products.Interfaces;
-using Ledger.Domain.Tickets.Enums;
 
 namespace Ledger.Application.Products
 {
@@ -21,7 +21,7 @@ namespace Ledger.Application.Products
         public async Task<Result<Product>> Handle(ProductAddCommand request, CancellationToken cancellationToken)
         {
             var product = Product.Create(request.Name, request.MesureUnit);
-            await _repository.CreateAsync(product, cancellationToken);
+            await _repository.AddAsync(product, cancellationToken);
             return product;
         }
     }

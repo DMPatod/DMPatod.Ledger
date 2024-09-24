@@ -14,7 +14,7 @@ namespace Ledger.Application.Tests.Tickets
     public class TicketCreateCommandTests
     {
         [Fact]
-        public async void Handle_ShouldReturnTicket()
+        public async Task Handle_ShouldReturnTicket()
         {
             var command = new TicketAddCommand(
                 Guid.NewGuid().ToString(),

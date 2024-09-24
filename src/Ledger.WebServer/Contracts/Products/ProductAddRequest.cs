@@ -1,4 +1,4 @@
-﻿using Ledger.Domain.Tickets.Enums;
+﻿using Ledger.Domain.Products.Enums;
 
 namespace Ledger.WebServer.Contracts.Products
 {

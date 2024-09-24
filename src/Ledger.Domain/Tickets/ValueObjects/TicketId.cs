@@ -11,6 +11,11 @@ namespace Ledger.Domain.Tickets.ValueObjects
             Value = value;
         }
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         public static TicketId Create()
         {
             return new TicketId(Guid.NewGuid());

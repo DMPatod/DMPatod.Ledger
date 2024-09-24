@@ -20,7 +20,7 @@ namespace Ledger.Application.Providers
         public async Task<Result<Provider>> Handle(ProviderAddCommand request, CancellationToken cancellationToken)
         {
             var provider = Provider.Create(request.Name);
-            await _repository.CreateAsync(provider, cancellationToken);
+            await _repository.AddAsync(provider, cancellationToken);
             return provider;
         }
     }

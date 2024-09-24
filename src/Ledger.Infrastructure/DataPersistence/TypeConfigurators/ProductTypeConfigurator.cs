@@ -22,9 +22,6 @@ namespace Ledger.Infrastructure.DataPersistence.TypeConfigurators
             builder.Property(p => p.Name);
 
             builder.Property(p => p.MesureUnit);
-
-            builder.HasMany(p => p.Orders)
-                .WithOne(o => o.Product);
         }
     }
 }

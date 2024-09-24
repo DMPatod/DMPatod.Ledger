@@ -1,19 +1,24 @@
 ﻿using Ledger.Domain.Products;
 using Ledger.Domain.Products.Interfaces;
 using Ledger.Domain.Products.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
 {
     internal class ProductRepository : IProductRepository
     {
-        public Task<Product> CreateAsync(Product entity, CancellationToken cancellationToken = default)
+        private readonly SqlServerContext _context;
+
+        public ProductRepository(SqlServerContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task<Product> AddAsync(Product entity, CancellationToken cancellationToken = default)
+        {
+            var ct = await _context.AddAsync(entity, cancellationToken);
+            await _context.SaveAsync(cancellationToken);
+            return ct.Entity;
         }
 
         public Task DeleteAsync(Product entity, CancellationToken cancellationToken = default)
@@ -21,12 +26,17 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Product?> FindAsync(ProductId id, CancellationToken cancellationToken = default)
+        public async Task<Product?> FindAsync(ProductId id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Product>().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        }
+
+        public Task<ICollection<Product>> FindAsync(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Product>> FindAsync(CancellationToken cancellationToken = default)
+        public Task<int> FindPaginatedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

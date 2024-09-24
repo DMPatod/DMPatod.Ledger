@@ -1,4 +1,4 @@
-﻿namespace Ledger.Domain.Tickets.Enums
+﻿namespace Ledger.Domain.Products.Enums
 {
     public enum MesureUnit
     {

@@ -1,19 +1,24 @@
 ﻿using Ledger.Domain.Providers;
 using Ledger.Domain.Providers.Interfaces;
 using Ledger.Domain.Providers.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
 {
     internal class ProviderRepository : IProviderRepository
     {
-        public Task<Provider> CreateAsync(Provider entity, CancellationToken cancellationToken = default)
+        private readonly SqlServerContext _context;
+
+        public ProviderRepository(SqlServerContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task<Provider> AddAsync(Provider entity, CancellationToken cancellationToken = default)
+        {
+            var ct = await _context.AddAsync(entity, cancellationToken);
+            await _context.SaveAsync(cancellationToken);
+            return ct.Entity;
         }
 
         public Task DeleteAsync(Provider entity, CancellationToken cancellationToken = default)
@@ -21,12 +26,17 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Provider?> FindAsync(ProviderId id, CancellationToken cancellationToken = default)
+        public async Task<Provider?> FindAsync(ProviderId id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Provider>().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        }
+
+        public Task<ICollection<Provider>> FindAsync(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Provider>> FindAsync(CancellationToken cancellationToken = default)
+        public Task<int> FindPaginatedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

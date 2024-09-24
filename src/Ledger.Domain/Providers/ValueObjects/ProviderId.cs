@@ -11,6 +11,11 @@ namespace Ledger.Domain.Providers.ValueObjects
             Value = value;
         }
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         public static ProviderId Create()
         {
             return new ProviderId(Guid.NewGuid());

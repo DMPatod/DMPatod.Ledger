@@ -20,13 +20,13 @@ namespace Ledger.Infrastructure.DataPersistence.TypeConfigurators
                     value => TicketId.Create(value));
 
             builder.HasOne(t => t.Provider)
-                .WithMany(p => p.Tickets)
+                .WithMany()
                 .IsRequired();
 
             builder.Property(t => t.Date);
 
             builder.HasMany(t => t.Orders)
-                .WithOne(o => o.Ticket)
+                .WithOne()
                 .IsRequired();
 
             builder.Property(t => t.Installments);

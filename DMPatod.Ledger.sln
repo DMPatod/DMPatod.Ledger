@@ -17,7 +17,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ledger.Application", "src\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ledger.Application.Tests", "tests\Ledger.Application.Tests\Ledger.Application.Tests.csproj", "{AA31F543-908A-47B5-B0D3-811EA9ED948B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ledger.WebServer", "src\Ledger.WebServer\Ledger.WebServer.csproj", "{E6135DCA-4BCC-46C1-A55B-DCFBE1CA88DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ledger.WebServer", "src\Ledger.WebServer\Ledger.WebServer.csproj", "{E6135DCA-4BCC-46C1-A55B-DCFBE1CA88DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED169FA1-D414-4D14-9DFD-AF834B7FF240}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ledger.WebServer.Tests", "tests\Ledger.WebServer.Tests\Ledger.WebServer.Tests.csproj", "{16FD88ED-7036-4651-93C3-BBD6C408B5B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +58,10 @@ Global
 		{E6135DCA-4BCC-46C1-A55B-DCFBE1CA88DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6135DCA-4BCC-46C1-A55B-DCFBE1CA88DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6135DCA-4BCC-46C1-A55B-DCFBE1CA88DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16FD88ED-7036-4651-93C3-BBD6C408B5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16FD88ED-7036-4651-93C3-BBD6C408B5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16FD88ED-7036-4651-93C3-BBD6C408B5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16FD88ED-7036-4651-93C3-BBD6C408B5B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +73,7 @@ Global
 		{354D4DB8-72DC-4259-9D04-1BD4C83E21FE} = {84781FE7-4151-43DC-B821-108411871636}
 		{AA31F543-908A-47B5-B0D3-811EA9ED948B} = {23A908DE-542C-42F6-8286-EF3A3B733DC8}
 		{E6135DCA-4BCC-46C1-A55B-DCFBE1CA88DE} = {84781FE7-4151-43DC-B821-108411871636}
+		{16FD88ED-7036-4651-93C3-BBD6C408B5B9} = {23A908DE-542C-42F6-8286-EF3A3B733DC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E31331AB-885D-456C-AD30-A03B4C5906DF}

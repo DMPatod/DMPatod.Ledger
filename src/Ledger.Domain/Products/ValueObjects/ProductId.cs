@@ -11,6 +11,11 @@ namespace Ledger.Domain.Products.ValueObjects
             Value = value;
         }
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         public static ProductId Create()
         {
             return new ProductId(Guid.NewGuid());

@@ -4,7 +4,8 @@ using Ledger.Domain.Tickets.ValueObjects;
 
 namespace Ledger.Domain.Tickets.Interfaces
 {
-    public interface IOrderRepository : IBaseRepository<Order, OrderId>
+    public interface IOrderRepository //: IBaseRepository<Order, OrderId>
     {
+
     }
 }

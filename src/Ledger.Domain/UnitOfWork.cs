@@ -4,12 +4,15 @@ using Ledger.Domain.Tickets.Interfaces;
 
 namespace Ledger.Domain
 {
-    public class RepositoryFactory
+    public class UnitOfWork
     {
         private readonly IProviderRepository _providerRepository;
+
         private readonly IProductRepository _productRepository;
+
         private readonly ITicketRepository _ticketRepository;
-        public RepositoryFactory(
+
+        public UnitOfWork(
             IProviderRepository providerRepository,
             IProductRepository productRepository,
             ITicketRepository ticketRepository)
@@ -19,7 +22,9 @@ namespace Ledger.Domain
             _ticketRepository = ticketRepository;
         }
         public IProviderRepository ProviderRepository { get => _providerRepository; }
+
         public IProductRepository ProductRepository { get => _productRepository; }
+
         public ITicketRepository TicketRepository { get => _ticketRepository; }
     }
 }

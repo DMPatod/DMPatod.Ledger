@@ -55,12 +55,6 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
 
             modelBuilder.Entity("Ledger.Domain.Tickets.Entity.Order", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
@@ -70,9 +64,10 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.HasKey("Id");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
-                    b.HasIndex("ProductId");
+                    b.HasKey("ProductId", "TicketId", "Value", "Amount");
 
                     b.HasIndex("TicketId");
 

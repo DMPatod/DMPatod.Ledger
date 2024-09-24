@@ -8,15 +8,15 @@ namespace Ledger.Domain.Tickets
 {
     public class Ticket : AggregateRoot<TicketId>
     {
-        public Provider Provider { get; set; }
+        public Provider Provider { get; protected set; }
 
-        public DateOnly Date { get; set; }
+        public DateOnly Date { get; protected set; }
 
-        public ICollection<Order> Orders { get; set; } = [];
+        public IList<Order> Orders { get; protected set; } = [];
 
         public double Value { get => Orders.Sum(o => o.Value * o.Amount); }
 
-        public int Installments { get; set; }
+        public int Installments { get; protected set; }
 
         public DateOnly? FinishPayment
         {
@@ -43,7 +43,7 @@ namespace Ledger.Domain.Tickets
             TicketId id,
             Provider provider,
             DateOnly date,
-            ICollection<Order> orders,
+            IEnumerable<OrderValue> orders,
             int installments,
             Currency currency,
             Direction direction)
@@ -51,7 +51,7 @@ namespace Ledger.Domain.Tickets
         {
             Provider = provider;
             Date = date;
-            Orders = orders;
+            Orders = orders.Select(o => Order.Create(o.Product, this, o.Value, o.Amount)).ToList();
             Installments = installments;
             Currency = currency;
             Direction = direction;
@@ -60,12 +60,12 @@ namespace Ledger.Domain.Tickets
         public static Ticket Create(
             Provider provider,
             DateOnly date,
-            ICollection<Order> orders,
+            IEnumerable<OrderValue> orders,
             int installments = 0,
             Currency currency = Currency.BRL,
             Direction direction = Direction.Outcome)
         {
-            if (orders.Count < 1)
+            if (!orders.Any())
             {
                 throw new Exception("Ticket must have at least one order");
             }

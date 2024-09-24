@@ -5,7 +5,7 @@ namespace Ledger.WebServer.Contracts.Tickets
 {
     public record TicketAddRequest(
         string Provider,
-        DateOnly Date,
+        string Date,
         ICollection<OrderCreateRequest> Orders,
         int Installments,
         Currency Currency,
