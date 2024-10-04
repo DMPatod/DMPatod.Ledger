@@ -31,9 +31,9 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
             return await _context.Set<Product>().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
 
-        public Task<ICollection<Product>> FindAsync(CancellationToken cancellationToken = default)
+        public async Task<ICollection<Product>> FindAsync(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await _context.Set<Product>().ToListAsync(cancellationToken);
         }
 
         public Task<int> FindPaginatedAsync(int page, int pageSize, CancellationToken cancellationToken = default)

@@ -21,19 +21,23 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
             return ct.Entity;
         }
 
-        public Task DeleteAsync(Ticket entity, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(Ticket entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var qedq = await _context.Set<Ticket>().Where(t => t.Id == entity.Id).ExecuteDeleteAsync(cancellationToken);
         }
 
         public async Task<Ticket?> FindAsync(TicketId id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<Ticket>().FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+            return await _context.Set<Ticket>()
+                .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
         }
 
         public async Task<ICollection<Ticket>> FindAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Set<Ticket>().Include(t => t.Orders).ToListAsync(cancellationToken);
+            return await _context.Set<Ticket>()
+                //.AsSplitQuery()
+                .Include(t => t.Orders)
+                .ToListAsync(cancellationToken);
         }
 
         public Task<int> FindPaginatedAsync(int page, int pageSize, CancellationToken cancellationToken = default)
@@ -43,6 +47,10 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
 
         public Task UpdateAsync(Ticket entity, CancellationToken cancellationToken = default)
         {
+            //PATCH FUNC
+            //await _context.Set<Ticket>()
+            //    .Where(t => t.Id == entity.Id)
+            //    .ExecuteUpdateAsync(ex => ex.SetProperty(t => t.Installments, entity.Installments), cancellationToken);
             throw new NotImplementedException();
         }
     }

@@ -2,6 +2,7 @@
 using Ledger.Domain.Providers.Interfaces;
 using Ledger.Domain.Providers.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
 {
@@ -31,9 +32,9 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
             return await _context.Set<Provider>().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
 
-        public Task<ICollection<Provider>> FindAsync(CancellationToken cancellationToken = default)
+        public async Task<ICollection<Provider>> FindAsync(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await _context.Set<Provider>().ToListAsync(cancellationToken);
         }
 
         public Task<int> FindPaginatedAsync(int page, int pageSize, CancellationToken cancellationToken = default)

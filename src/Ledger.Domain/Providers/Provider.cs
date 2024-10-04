@@ -1,6 +1,5 @@
 ﻿using DDD.Core.DomainObjects;
 using Ledger.Domain.Providers.ValueObjects;
-using Ledger.Domain.Tickets;
 
 namespace Ledger.Domain.Providers
 {
