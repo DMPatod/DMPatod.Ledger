@@ -1,5 +1,6 @@
 ﻿using Ledger.Domain.Products;
 using Ledger.Domain.Products.ValueObjects;
+using Ledger.Infrastructure.DataPersistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,7 +22,10 @@ namespace Ledger.Infrastructure.DataPersistence.TypeConfigurators
 
             builder.Property(p => p.Name);
 
-            builder.Property(p => p.MesureUnit);
+            builder.Property(p => p.MesureUnit)
+                .HasConversion(EnumsConverters.MesureUnitConverter);
+
+            builder.Property(p => p.AverageValue);
         }
     }
 }

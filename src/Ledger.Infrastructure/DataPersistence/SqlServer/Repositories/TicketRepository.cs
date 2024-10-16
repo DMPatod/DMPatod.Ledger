@@ -37,6 +37,7 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
             return await _context.Set<Ticket>()
                 //.AsSplitQuery()
                 .Include(t => t.Orders)
+                .Include(t => t.Provider)
                 .ToListAsync(cancellationToken);
         }
 

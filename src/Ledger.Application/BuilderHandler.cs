@@ -1,5 +1,7 @@
 ﻿using DDD.Core.Handlers;
+using Ledger.Application.Products;
 using Ledger.Domain;
+using Ledger.Domain.Products.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ledger.Application
@@ -10,6 +12,8 @@ namespace Ledger.Application
         {
             services.AddDefaultMessageHandler(typeof(BuilderHandler).Assembly);
             services.AddScoped<UnitOfWork>();
+
+            services.AddScoped<IProductService, ProductService>();
 
             return services;
         }

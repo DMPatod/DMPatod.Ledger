@@ -33,7 +33,7 @@ namespace Ledger.WebServer.Controllers.V1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(ProvidersAddRequest request)
+        public async Task<IActionResult> Add(ProviderAddRequest request)
         {
             var command = new ProviderAddCommand(request.Name);
             var result = await _messageHandler.SendAsync(command, CancellationToken.None);
@@ -41,7 +41,8 @@ namespace Ledger.WebServer.Controllers.V1
             {
                 throw new Exception();
             }
-            return Ok(result.ValueOrDefault);
+            var response = _mapper.Map<ProviderResponse>(result.ValueOrDefault);
+            return Ok(response);
         }
     }
 }

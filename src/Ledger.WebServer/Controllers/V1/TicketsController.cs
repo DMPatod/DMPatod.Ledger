@@ -1,4 +1,5 @@
-﻿using DDD.Core.Handlers.SHS.RD.CGC.Core.DomainEvents;
+﻿using AutoMapper;
+using DDD.Core.Handlers.SHS.RD.CGC.Core.DomainEvents;
 using Ledger.Application.Tickets;
 using Ledger.WebServer.Contracts.Tickets;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace Ledger.WebServer.Controllers.V1
     public class TicketsController : ControllerBase
     {
         private readonly IMessageHandler _messageHandler;
+        private readonly IMapper _mapper;
 
-        public TicketsController(IMessageHandler messageHandler)
+        public TicketsController(IMessageHandler messageHandler, IMapper mapper)
         {
             _messageHandler = messageHandler;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -46,7 +49,8 @@ namespace Ledger.WebServer.Controllers.V1
             {
                 throw new Exception();
             }
-            return Ok(result.ValueOrDefault);
+            var response = _mapper.Map<IEnumerable<TicketResponse>>(result.ValueOrDefault);
+            return Ok(response);
         }
     }
 }

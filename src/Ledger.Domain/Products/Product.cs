@@ -10,6 +10,8 @@ namespace Ledger.Domain.Products
 
         public MesureUnit MesureUnit { get; set; }
 
+        public double AverageValue { get; private set; }
+
         private Product()
         {
             // For EF Only.

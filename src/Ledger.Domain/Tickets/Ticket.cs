@@ -12,9 +12,11 @@ namespace Ledger.Domain.Tickets
 
         public DateOnly Date { get; protected set; }
 
-        public IList<Order> Orders { get; protected set; } = [];
+        private IList<Order> _orders = [];
 
-        public double Value { get => Orders.Sum(o => o.Value * o.Amount); }
+        public IReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
+
+        public double Value { get => _orders.Sum(o => o.Value * o.Amount); }
 
         public int Installments { get; protected set; }
 
@@ -51,7 +53,7 @@ namespace Ledger.Domain.Tickets
         {
             Provider = provider;
             Date = date;
-            Orders = orders.Select(o => Order.Create(o.Product, this, o.Value, o.Amount)).ToList();
+            _orders = orders.Select(o => Order.Create(o.Product, this, o.Value, o.Amount)).ToList();
             Installments = installments;
             Currency = currency;
             Direction = direction;

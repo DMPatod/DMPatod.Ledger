@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DDD.Core.Handlers.SHS.RD.CGC.Core.DomainEvents;
-using Ledger.Application.Products;
+using Ledger.Application.Products.Commands;
+using Ledger.Application.Products.Queries;
 using Ledger.WebServer.Contracts.Products;
+using Ledger.WebServer.Contracts.Providers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ledger.WebServer.Controllers.V1
@@ -30,6 +32,32 @@ namespace Ledger.WebServer.Controllers.V1
             }
             var response = _mapper.Map<IEnumerable<ProductResponse>>(result.ValueOrDefault);
             return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute] string id)
+        {
+            var command = new ProductFindQuery(id);
+            var result = await _messageHandler.SendAsync(command, CancellationToken.None);
+            if (result.IsFailed)
+            {
+                throw new Exception();
+            }
+            var response = _mapper.Map<ProductResponse>(result.ValueOrDefault);
+            return Ok(response);
+        }
+
+        [HttpGet("{id}/values")]
+        public async Task<IActionResult> GetValues([FromRoute] string id)
+        {
+            var command = new ProductFindValuesQuery(id);
+            var result = await _messageHandler.SendAsync(command, CancellationToken.None);
+            if (result.IsFailed)
+            {
+                throw new Exception();
+            }
+            var response = _mapper.Map<Dictionary<ProviderResponse, double>>(result.ValueOrDefault);
+            return Ok(response.ToList());
         }
 
         [HttpPost]

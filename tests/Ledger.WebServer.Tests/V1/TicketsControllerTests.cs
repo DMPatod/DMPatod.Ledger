@@ -29,7 +29,7 @@ namespace Ledger.WebServer.Tests.V1
 
             var prodiverResponse = await client.PostAsJsonAsync(
                 "api/Providers",
-                new ProvidersAddRequest("Pão de Açuca"));
+                new ProviderAddRequest("Pão de Açuca"));
             Assert.True(prodiverResponse.IsSuccessStatusCode);
             var provider = JsonConvert.DeserializeObject<Provider>(await prodiverResponse.Content.ReadAsStringAsync());
             Assert.NotNull(provider);

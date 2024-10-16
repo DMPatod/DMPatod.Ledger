@@ -1,5 +1,6 @@
 ﻿using Ledger.Domain.Tickets;
 using Ledger.Domain.Tickets.ValueObjects;
+using Ledger.Infrastructure.DataPersistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,9 +32,11 @@ namespace Ledger.Infrastructure.DataPersistence.TypeConfigurators
 
             builder.Property(t => t.Installments);
 
-            builder.Property(t => t.Currency);
+            builder.Property(t => t.Currency)
+                .HasConversion(EnumsConverters.CurrencyConverter);
 
-            builder.Property(t => t.Direction);
+            builder.Property(t => t.Direction)
+                .HasConversion(EnumsConverters.DirectionConverter);
         }
     }
 }

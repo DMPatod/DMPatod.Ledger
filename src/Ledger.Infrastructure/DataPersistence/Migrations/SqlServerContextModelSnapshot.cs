@@ -27,8 +27,12 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("MesureUnit")
-                        .HasColumnType("int");
+                    b.Property<double>("AverageValue")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MesureUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -79,14 +83,16 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("int");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<int>("Direction")
-                        .HasColumnType("int");
+                    b.Property<string>("Direction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Installments")
                         .HasColumnType("int");
@@ -104,41 +110,29 @@ namespace Ledger.Infrastructure.DataPersistence.Migrations
             modelBuilder.Entity("Ledger.Domain.Tickets.Entity.Order", b =>
                 {
                     b.HasOne("Ledger.Domain.Products.Product", "Product")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ledger.Domain.Tickets.Ticket", "Ticket")
+                    b.HasOne("Ledger.Domain.Tickets.Ticket", null)
                         .WithMany("Orders")
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
-
-                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Ledger.Domain.Tickets.Ticket", b =>
                 {
                     b.HasOne("Ledger.Domain.Providers.Provider", "Provider")
-                        .WithMany("Tickets")
+                        .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Provider");
-                });
-
-            modelBuilder.Entity("Ledger.Domain.Products.Product", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Ledger.Domain.Providers.Provider", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("Ledger.Domain.Tickets.Ticket", b =>
