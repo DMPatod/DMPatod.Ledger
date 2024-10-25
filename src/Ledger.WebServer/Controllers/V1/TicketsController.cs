@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Confluent.Kafka;
 using DDD.Core.Handlers.SHS.RD.CGC.Core.DomainEvents;
 using Ledger.Application.Tickets;
+using Ledger.Domain.Tickets.Messages;
 using Ledger.WebServer.Contracts.Tickets;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,10 +35,10 @@ namespace Ledger.WebServer.Controllers.V1
                 request.Currency,
                 request.Direction);
             var result = await _messageHandler.SendAsync(command, CancellationToken.None);
-            if (result.IsFailed)
-            {
-                throw new Exception();
-            }
+            // if (result.IsFailed)
+            // {
+            //     throw new Exception();
+            // }
             return Ok(result.ValueOrDefault);
         }
 

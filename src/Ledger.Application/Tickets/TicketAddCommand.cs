@@ -8,7 +8,9 @@ using Ledger.Domain.Providers.ValueObjects;
 using Ledger.Domain.Tickets;
 using Ledger.Domain.Tickets.Enums;
 using Ledger.Domain.Tickets.Interfaces;
+using Ledger.Domain.Tickets.Messages;
 using Ledger.Domain.Tickets.ValueObjects;
+using MassTransit;
 
 namespace Ledger.Application.Tickets
 {
@@ -30,52 +32,56 @@ namespace Ledger.Application.Tickets
         private readonly ITicketRepository _ticketRepository;
         private readonly IProviderRepository _providerRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ITopicProducer<ExMessage> _publishEndpoint;
 
         public TicketAddCommandHandler(
             ITicketRepository ticketRepository,
             IProviderRepository providerRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            ITopicProducer<ExMessage> publisher)
         {
             _ticketRepository = ticketRepository;
             _providerRepository = providerRepository;
             _productRepository = productRepository;
+            _publishEndpoint = publisher;
         }
 
         public async Task<Result<Ticket>> Handle(TicketAddCommand request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.ProviderId, out var providerGuid))
-            {
-                throw new Exception("Invalid passed GUID");
-            }
-            var provider = await _providerRepository.FindAsync(ProviderId.Create(providerGuid), cancellationToken)
-                ?? throw new Exception("Unable to find Provider");
+            await _publishEndpoint.Produce(new ExMessage("TEST"), cancellationToken);
 
-            var orders = new List<OrderValue>();
-            foreach (var item in request.Orders)
-            {
-                if (!Guid.TryParse(item.Product, out var productGuid))
-                {
-                    throw new Exception("Invalid passed GUID");
-                }
-                var product = await _productRepository.FindAsync(ProductId.Create(productGuid), cancellationToken)
-                    ?? throw new Exception("Unable to find Product");
-                orders.Add(new OrderValue(
-                    product,
-                    item.Value,
-                    item.Amount));
-            }
+            // if (!Guid.TryParse(request.ProviderId, out var providerGuid))
+            // {
+            //     throw new Exception("Invalid passed GUID");
+            // }
+            // var provider = await _providerRepository.FindAsync(ProviderId.Create(providerGuid), cancellationToken)
+            //     ?? throw new Exception("Unable to find Provider");
+            //
+            // var orders = new List<OrderValue>();
+            // foreach (var item in request.Orders)
+            // {
+            //     if (!Guid.TryParse(item.Product, out var productGuid))
+            //     {
+            //         throw new Exception("Invalid passed GUID");
+            //     }
+            //     var product = await _productRepository.FindAsync(ProductId.Create(productGuid), cancellationToken)
+            //         ?? throw new Exception("Unable to find Product");
+            //     orders.Add(new OrderValue(
+            //         product,
+            //         item.Value,
+            //         item.Amount));
+            // }
 
-            var ticket = Ticket.Create(
-                provider,
-                request.Date,
-                orders,
-                request.Installments,
-                request.Currency,
-                request.Direction);
-            await _ticketRepository.AddAsync(ticket, cancellationToken);
+            // var ticket = Ticket.Create(
+            //     provider,
+            //     request.Date,
+            //     orders,
+            //     request.Installments,
+            //     request.Currency,
+            //     request.Direction);
+            //await _ticketRepository.AddAsync(ticket, cancellationToken);
 
-            return ticket;
+            return Result.Fail("Fail");
         }
     }
-
 }

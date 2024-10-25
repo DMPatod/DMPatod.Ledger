@@ -34,8 +34,9 @@ namespace Ledger.Infrastructure.DataPersistence.SqlServer.Repositories
 
         public async Task<ICollection<Ticket>> FindAsync(CancellationToken cancellationToken = default)
         {
+            // Add Select()
             return await _context.Set<Ticket>()
-                //.AsSplitQuery()
+                // .AsSplitQuery()
                 .Include(t => t.Orders)
                 .Include(t => t.Provider)
                 .ToListAsync(cancellationToken);
