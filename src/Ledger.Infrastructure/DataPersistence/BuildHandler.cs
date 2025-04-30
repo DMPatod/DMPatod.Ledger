@@ -1,4 +1,5 @@
-﻿using Ledger.Domain.Products.Interfaces;
+﻿using Ledger.Domain.Bills.Interfaces;
+using Ledger.Domain.Products.Interfaces;
 using Ledger.Domain.Providers.Interfaces;
 using Ledger.Domain.Tickets.Interfaces;
 using Ledger.Infrastructure.DataPersistence.SqlServer;
@@ -21,6 +22,7 @@ namespace Ledger.Infrastructure.DataPersistence
             service.AddTransient<ITicketRepository, TicketRepository>();
             service.AddTransient<IProductRepository, ProductRepository>();
             service.AddTransient<IProviderRepository, ProviderRepository>();
+            service.AddTransient<IBillRepository, BillRepository>();
 
             return service;
         }

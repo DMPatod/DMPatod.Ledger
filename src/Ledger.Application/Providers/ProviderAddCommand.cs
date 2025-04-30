@@ -4,24 +4,23 @@ using FluentResults;
 using Ledger.Domain.Providers;
 using Ledger.Domain.Providers.Interfaces;
 
-namespace Ledger.Application.Providers
+namespace Ledger.Application.Providers;
+
+public record ProviderAddCommand(string Name) : ICommand<Result<Provider>>;
+
+internal class ProviderAddCommandHandler : ICommandHandler<ProviderAddCommand, Result<Provider>>
 {
-    public record ProviderAddCommand(string Name) : ICommand<Result<Provider>>;
+    private readonly IProviderRepository _repository;
 
-    public class ProviderAddCommandHandler : ICommandHandler<ProviderAddCommand, Result<Provider>>
+    public ProviderAddCommandHandler(IProviderRepository repository)
     {
-        private readonly IProviderRepository _repository;
+        _repository = repository;
+    }
 
-        public ProviderAddCommandHandler(IProviderRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<Result<Provider>> Handle(ProviderAddCommand request, CancellationToken cancellationToken)
-        {
-            var provider = Provider.Create(request.Name);
-            await _repository.AddAsync(provider, cancellationToken);
-            return provider;
-        }
+    public async Task<Result<Provider>> Handle(ProviderAddCommand request, CancellationToken cancellationToken)
+    {
+        var provider = Provider.Create(request.Name);
+        await _repository.AddAsync(provider, cancellationToken);
+        return provider;
     }
 }

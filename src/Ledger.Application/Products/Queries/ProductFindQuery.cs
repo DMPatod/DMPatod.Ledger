@@ -5,31 +5,30 @@ using Ledger.Domain.Products;
 using Ledger.Domain.Products.Interfaces;
 using Ledger.Domain.Products.ValueObjects;
 
-namespace Ledger.Application.Products.Queries
+namespace Ledger.Application.Products.Queries;
+
+public record ProductFindQuery(string Id) : IResultCommand<Product>;
+
+internal class ProductFindQueryHandler : IResultComandHandler<ProductFindQuery, Product>
 {
-    public record ProductFindQuery(string Id) : IResultCommand<Product>;
+    private readonly IProductRepository _productRepository;
 
-    public class ProductFindQueryHandler : IResultComandHandler<ProductFindQuery, Product>
+    public ProductFindQueryHandler(IProductRepository productRepository)
     {
-        private readonly IProductRepository _productRepository;
+        _productRepository = productRepository;
+    }
 
-        public ProductFindQueryHandler(IProductRepository productRepository)
+    public async Task<Result<Product>> Handle(ProductFindQuery request, CancellationToken cancellationToken)
+    {
+        var product = await _productRepository.FindAsync(
+            ProductId.Create(Guid.Parse(request.Id)),
+            cancellationToken);
+
+        if (product is null)
         {
-            _productRepository = productRepository;
+            return Result.Fail("Product not found.");
         }
 
-        public async Task<Result<Product>> Handle(ProductFindQuery request, CancellationToken cancellationToken)
-        {
-            var product = await _productRepository.FindAsync(
-                ProductId.Create(Guid.Parse(request.Id)),
-                cancellationToken);
-
-            if (product is null)
-            {
-                return Result.Fail("Product not found.");
-            }
-
-            return product;
-        }
+        return product;
     }
 }

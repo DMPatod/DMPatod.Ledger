@@ -4,23 +4,22 @@ using FluentResults;
 using Ledger.Domain.Products;
 using Ledger.Domain.Products.Interfaces;
 
-namespace Ledger.Application.Products.Queries
+namespace Ledger.Application.Products.Queries;
+
+public record ProductsFindQuery() : IResultCommand<IEnumerable<Product>>;
+
+internal class ProductsFindQueryHandler : IResultComandHandler<ProductsFindQuery, IEnumerable<Product>>
 {
-    public record ProductsFindQuery() : IResultCommand<IEnumerable<Product>>;
+    private readonly IProductRepository _productRepository;
 
-    public class ProductsFindQueryHandler : IResultComandHandler<ProductsFindQuery, IEnumerable<Product>>
+    public ProductsFindQueryHandler(IProductRepository productRepository)
     {
-        private readonly IProductRepository _productRepository;
+        _productRepository = productRepository;
+    }
 
-        public ProductsFindQueryHandler(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
-
-        public async Task<Result<IEnumerable<Product>>> Handle(ProductsFindQuery request, CancellationToken cancellationToken)
-        {
-            var products = await _productRepository.FindAsync(cancellationToken);
-            return products.ToList();
-        }
+    public async Task<Result<IEnumerable<Product>>> Handle(ProductsFindQuery request, CancellationToken cancellationToken)
+    {
+        var products = await _productRepository.FindAsync(cancellationToken);
+        return products.ToList();
     }
 }

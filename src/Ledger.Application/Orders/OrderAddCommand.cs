@@ -5,19 +5,18 @@ using Ledger.Domain.Products.Enums;
 using Ledger.Domain.Tickets;
 using Ledger.Domain.Tickets.Entity;
 
-namespace Ledger.Application.Orders
-{
-    public record OrderAddCommand(Ticket Ticket,
-        string Product,
-        double Value,
-        double Amount = 1,
-        MesureUnit MesureUnit = MesureUnit.Unit) : ICommand<Result<Order>>;
+namespace Ledger.Application.Orders;
 
-    public class OrderAddCommandHandler : ICommandHandler<OrderAddCommand, Result<Order>>
+public record OrderAddCommand(Ticket Ticket,
+    string Product,
+    double Value,
+    double Amount = 1,
+    MesureUnit MesureUnit = MesureUnit.Unit) : ICommand<Result<Order>>;
+
+internal class OrderAddCommandHandler : ICommandHandler<OrderAddCommand, Result<Order>>
+{
+    public Task<Result<Order>> Handle(OrderAddCommand request, CancellationToken cancellationToken)
     {
-        public Task<Result<Order>> Handle(OrderAddCommand request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

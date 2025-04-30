@@ -1,9 +1,8 @@
 ﻿using DDD.Core.Repositories;
 using Ledger.Domain.Products.ValueObjects;
 
-namespace Ledger.Domain.Products.Interfaces
+namespace Ledger.Domain.Products.Interfaces;
+
+public interface IProductRepository : IBaseRepository<Product, ProductId>
 {
-    public interface IProductRepository : IBaseRepository<Product, ProductId>
-    {
-    }
 }

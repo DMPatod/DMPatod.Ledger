@@ -1,10 +1,9 @@
 ﻿using Ledger.Domain.Providers;
 using Ledger.Domain.Tickets;
 
-namespace Ledger.Domain.Products.Interfaces
+namespace Ledger.Domain.Products.Interfaces;
+
+public interface IProductService
 {
-    public interface IProductService
-    {
-        Task<Dictionary<Provider, double>> GetProductPricesAcrossProviders(Product product, IEnumerable<Ticket> tickets);
-    }
+    Task<Dictionary<Provider, double>> GetProductPricesAcrossProviders(Product product, IEnumerable<Ticket> tickets);
 }

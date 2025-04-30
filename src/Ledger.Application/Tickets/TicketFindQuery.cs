@@ -4,23 +4,22 @@ using FluentResults;
 using Ledger.Domain;
 using Ledger.Domain.Tickets;
 
-namespace Ledger.Application.Tickets
+namespace Ledger.Application.Tickets;
+
+public record TicketFindQuery() : IResultCommand<ICollection<Ticket>>;
+
+internal class TicketFindQueryHandler : IResultComandHandler<TicketFindQuery, ICollection<Ticket>>
 {
-    public record TicketFindQuery() : IResultCommand<ICollection<Ticket>>;
+    private readonly UnitOfWork _unitOfWork;
 
-    public class TicketFindQueryHandler : IResultComandHandler<TicketFindQuery, ICollection<Ticket>>
+    public TicketFindQueryHandler(UnitOfWork unitOfWork)
     {
-        private readonly UnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+    }
 
-        public TicketFindQueryHandler(UnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<Result<ICollection<Ticket>>> Handle(TicketFindQuery request, CancellationToken cancellationToken)
-        {
-            var tickets = await _unitOfWork.TicketRepository.FindAsync(cancellationToken);
-            return tickets.ToList();
-        }
+    public async Task<Result<ICollection<Ticket>>> Handle(TicketFindQuery request, CancellationToken cancellationToken)
+    {
+        var tickets = await _unitOfWork.TicketRepository.FindAsync(cancellationToken);
+        return tickets.ToList();
     }
 }

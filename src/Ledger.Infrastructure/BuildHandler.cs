@@ -11,7 +11,7 @@ namespace Ledger.Infrastructure
             IConfiguration configuration)
         {
             services.AddDataPersistence(configuration);
-            services.AddMessaging(configuration);
+            //services.AddMessaging(configuration);
 
             return services;
         }

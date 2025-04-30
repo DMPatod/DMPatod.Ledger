@@ -1,12 +1,12 @@
 ﻿using DDD.Core.DomainObjects;
 
-namespace Ledger.Domain.Providers.ValueObjects;
+namespace Ledger.Domain.Bills.ValueObjects;
 
-public class ProviderId : ValueObject
+public class BillId : ValueObject
 {
     public Guid Value { get; set; }
 
-    private ProviderId(Guid value)
+    private BillId(Guid value)
     {
         Value = value;
     }
@@ -16,14 +16,14 @@ public class ProviderId : ValueObject
         return Value.ToString();
     }
 
-    public static ProviderId Create()
+    public static BillId Create()
     {
-        return new ProviderId(Guid.NewGuid());
+        return new BillId(Guid.NewGuid());
     }
 
-    public static ProviderId Create(Guid value)
+    public static BillId Create(Guid value)
     {
-        return new ProviderId(value);
+        return new BillId(value);
     }
 
     public override IEnumerable<object> GetEqualityComponents()

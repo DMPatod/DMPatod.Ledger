@@ -5,43 +5,42 @@ using DDD.Core.Messages;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Ledger.Infrastructure.DataPersistence.SqlServer
+namespace Ledger.Infrastructure.DataPersistence.SqlServer;
+
+internal class SqlServerContext : DbContext, IDomainContext
 {
-    internal class SqlServerContext : DbContext, IDomainContext
+    private readonly IMessageHandler _messageHandler;
+
+    public SqlServerContext(DbContextOptions<SqlServerContext> options, IMessageHandler messageHandler)
+        : base(options)
     {
-        private readonly IMessageHandler _messageHandler;
+        _messageHandler = messageHandler;
+    }
 
-        public SqlServerContext(DbContextOptions<SqlServerContext> options, IMessageHandler messageHandler)
-            : base(options)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    public async Task SaveAsync(CancellationToken cancellationToken)
+    {
+        await DispatchDomainEvents(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task DispatchDomainEvents(CancellationToken cancellationToken = default)
+    {
+        var eventHolders = ChangeTracker.Entries()
+            .Where(ee => ee.Entity is DomainEventHolder)
+            .Select(ee => (DomainEventHolder)ee.Entity)
+            .ToList();
+
+        foreach (var eventHolder in eventHolders)
         {
-            _messageHandler = messageHandler;
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
-        public async Task SaveAsync(CancellationToken cancellationToken)
-        {
-            await DispatchDomainEvents(cancellationToken);
-            await SaveChangesAsync(cancellationToken);
-        }
-
-        private async Task DispatchDomainEvents(CancellationToken cancellationToken = default)
-        {
-            var eventHolders = ChangeTracker.Entries()
-                .Where(ee => ee.Entity is DomainEventHolder)
-                .Select(ee => (DomainEventHolder)ee.Entity)
-                .ToList();
-
-            foreach (var eventHolder in eventHolders)
+            while (eventHolder.TryRemoveDomainEvent(out IEvent domainEvent))
             {
-                while (eventHolder.TryRemoveDomainEvent(out IEvent domainEvent))
-                {
-                    await _messageHandler.PublishAsync(domainEvent, cancellationToken);
-                }
+                await _messageHandler.PublishAsync(domainEvent, cancellationToken);
             }
         }
     }

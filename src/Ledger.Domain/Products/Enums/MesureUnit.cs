@@ -1,10 +1,9 @@
-﻿namespace Ledger.Domain.Products.Enums
+﻿namespace Ledger.Domain.Products.Enums;
+
+public enum MesureUnit
 {
-    public enum MesureUnit
-    {
-        Kilogram,
-        Unit,
-        Liter,
-        Meter,
-    }
+    Kilogram,
+    Unit,
+    Liter,
+    Meter,
 }

@@ -1,8 +1,7 @@
-﻿namespace Ledger.Domain.Tickets.Enums
+﻿namespace Ledger.Domain.Tickets.Enums;
+
+public enum Direction
 {
-    public enum Direction
-    {
-        Income,
-        Outcome
-    }
+    Income,
+    Outcome
 }

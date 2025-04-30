@@ -5,24 +5,23 @@ using Ledger.Domain.Products;
 using Ledger.Domain.Products.Enums;
 using Ledger.Domain.Products.Interfaces;
 
-namespace Ledger.Application.Products.Commands
+namespace Ledger.Application.Products.Commands;
+
+public record ProductAddCommand(string Name, MesureUnit MesureUnit) : ICommand<Result<Product>>;
+
+internal class ProductCreateCommandHandler : ICommandHandler<ProductAddCommand, Result<Product>>
 {
-    public record ProductAddCommand(string Name, MesureUnit MesureUnit) : ICommand<Result<Product>>;
+    private readonly IProductRepository _repository;
 
-    public class ProductCreateCommandHandler : ICommandHandler<ProductAddCommand, Result<Product>>
+    public ProductCreateCommandHandler(IProductRepository repository)
     {
-        private readonly IProductRepository _repository;
+        _repository = repository;
+    }
 
-        public ProductCreateCommandHandler(IProductRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<Result<Product>> Handle(ProductAddCommand request, CancellationToken cancellationToken)
-        {
-            var product = Product.Create(request.Name, request.MesureUnit);
-            await _repository.AddAsync(product, cancellationToken);
-            return product;
-        }
+    public async Task<Result<Product>> Handle(ProductAddCommand request, CancellationToken cancellationToken)
+    {
+        var product = Product.Create(request.Name, request.MesureUnit);
+        await _repository.AddAsync(product, cancellationToken);
+        return product;
     }
 }

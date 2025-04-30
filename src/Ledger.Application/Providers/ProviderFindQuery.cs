@@ -4,23 +4,22 @@ using FluentResults;
 using Ledger.Domain;
 using Ledger.Domain.Providers;
 
-namespace Ledger.Application.Providers
+namespace Ledger.Application.Providers;
+
+public record ProviderFindQuery() : IResultCommand<IEnumerable<Provider>>;
+
+internal class ProviderFindQueryHandler : IResultComandHandler<ProviderFindQuery, IEnumerable<Provider>>
 {
-    public record ProviderFindQuery() : IResultCommand<IEnumerable<Provider>>;
+    private readonly UnitOfWork _unitOfWork;
 
-    public class ProviderFindQueryHandler : IResultComandHandler<ProviderFindQuery, IEnumerable<Provider>>
+    public ProviderFindQueryHandler(UnitOfWork unitOfWork)
     {
-        private readonly UnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+    }
 
-        public ProviderFindQueryHandler(UnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<Result<IEnumerable<Provider>>> Handle(ProviderFindQuery request, CancellationToken cancellationToken)
-        {
-            var result = await _unitOfWork.ProviderRepository.FindAsync(cancellationToken);
-            return result.ToList();
-        }
+    public async Task<Result<IEnumerable<Provider>>> Handle(ProviderFindQuery request, CancellationToken cancellationToken)
+    {
+        var result = await _unitOfWork.ProviderRepository.FindAsync(cancellationToken);
+        return result.ToList();
     }
 }

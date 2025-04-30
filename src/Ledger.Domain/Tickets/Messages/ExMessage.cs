@@ -1,4 +1,3 @@
-﻿namespace Ledger.Domain.Tickets.Messages
-{
-    public record ExMessage(string Text);
-}
+﻿namespace Ledger.Domain.Tickets.Messages;
+
+public record ExMessage(string Text);
